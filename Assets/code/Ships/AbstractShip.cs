@@ -11,11 +11,13 @@ namespace Ships
 
         public ShipModel model;
         private GameObject view;
+        private PopupComponent popupComponent;
         private float speed;
 
         public void Start()
         {
             model = new ShipModel();
+            popupComponent = GetComponent<PopupComponent>();
             Init();
         }
 
@@ -33,22 +35,28 @@ namespace Ships
 
         public void Update()
         {
-
+            model.position = view.transform.position;
         }
 
         public void MessageFromTheRadio(RadioMessage message)
         {
-            ShowPopUp("message: " + message.message + " time: " + message.time);
+            ShowPopUp("message: " + message.message + "\ntime: " + message.time);
+        }
+
+        public void ShipClickHandler()
+        {
+            Debug.Log("S C H");
+            SendMessage();
         }
 
         private void ShowPopUp(string text)
         {
-
+            popupComponent.AddNewPopup(text);
         }
 
         private void SendMessage()
         {
-            ShipEvent(model);
+            if (ShipEvent != null) ShipEvent(model);
         }
     }
 }
